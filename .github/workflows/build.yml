@@ -1,0 +1,41 @@
+name: Build
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Get more space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 30720
+          swap-size-mb: 1024
+          remove-dotnet: 'true'
+          remove-android: 'true'
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: armbian/build
+          ref: main
+          path: build
+      - name: Build
+        shell: bash
+        run: |
+          cd ./build
+          ./compile.sh \
+            BOARD=rock-5a \
+            BRANCH=legacy \
+            RELEASE=bookworm \
+            BUILD_MINIMAL=yes \
+            KERNEL_CONFIGURE=no \
+            EXPERT=no \
+            COMPRESS_OUTPUTIMAGE=sha,gpg,xz
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "./build/output/images/*.img.xz;./build/output/images/*.img.xz.sha;./build/output/debs/linux-*.deb"
