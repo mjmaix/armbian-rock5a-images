@@ -15,7 +15,7 @@ jobs:
         uses: easimon/maximize-build-space@master
         with:
           root-reserve-mb: 30720
-          swap-size-mb: 1024
+          swap-size-mb: 4096
           remove-dotnet: 'true'
           remove-android: 'true'
       - name: Checkout
@@ -30,12 +30,14 @@ jobs:
           cd ./build
           ./compile.sh \
             BOARD=rock-5a \
-            BRANCH=legacy \
+            BRANCH=mainline \
             RELEASE=bookworm \
-            BUILD_MINIMAL=yes \
+            BUILD_MINIMAL=no \
             KERNEL_CONFIGURE=no \
-            EXPERT=no \
-            COMPRESS_OUTPUTIMAGE=sha,gpg,xz
+            EXPERT=yes \
+            COMPRESS_OUTPUTIMAGE=sha,gpg,xz \
+            INSTALL_HEADERS=yes \
+            INSTALL_ARM_CONFIG=yes
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
