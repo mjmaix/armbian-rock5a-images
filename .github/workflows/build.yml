@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     tags:
-    - '*'
+      - "*"
 
 jobs:
   build:
@@ -16,8 +16,8 @@ jobs:
         with:
           root-reserve-mb: 30720
           swap-size-mb: 4096
-          remove-dotnet: 'true'
-          remove-android: 'true'
+          remove-dotnet: "true"
+          remove-android: "true"
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -30,14 +30,16 @@ jobs:
           cd ./build
           ./compile.sh \
             BOARD=rock-5a \
-            BRANCH=mainline \
+            BRANCH=current \
             RELEASE=bookworm \
             BUILD_MINIMAL=no \
             KERNEL_CONFIGURE=no \
             EXPERT=yes \
             COMPRESS_OUTPUTIMAGE=sha,gpg,xz \
             INSTALL_HEADERS=yes \
-            INSTALL_ARM_CONFIG=yes
+            INSTALL_ARM_CONFIG=yes \
+            DESKTOP_ENVIRONMENT=no \
+            BUILD_DESKTOP=no
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
