@@ -38,7 +38,6 @@ jobs:
             COMPRESS_OUTPUTIMAGE=sha,gpg,xz \
             INSTALL_HEADERS=yes \
             INSTALL_ARM_CONFIG=yes \
-            DESKTOP_ENVIRONMENT=no \
             BUILD_DESKTOP=no
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
